@@ -27,4 +27,4 @@ httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-fetchTrainPositions(io);
+// fetchTrainPositions(io);
