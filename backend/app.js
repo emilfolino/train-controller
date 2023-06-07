@@ -6,9 +6,16 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
 const fetchTrainPositions = require('./models/trains.js')
+const delayed = require('./routes/delayed.js');
 
 const app = express()
 const httpServer = require("http").createServer(app);
+
+
+app.use(cors());
+app.options('*', cors());
+
+app.disable('x-powered-by');
 
 const io = require("socket.io")(httpServer, {
   cors: {
@@ -22,6 +29,8 @@ const port = 1337
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+app.use("/delayed", delayed);
 
 httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

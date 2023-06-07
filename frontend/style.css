@@ -37,9 +37,39 @@ p {
     height: 100vh;
     width: 40vw;
     padding: 2rem;
+    overflow: scroll;
+    background-color: white;
 }
 
 .map {
     height: 100vh;
     width: 60vw;
+}
+
+.delayed-trains {
+    display: flex;
+    flex-direction: column;
+}
+
+.delayed-trains>div {
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #ccc;
+    padding: 0.2rem 0.8rem;
+    align-items: center;
+    cursor: pointer;
+}
+
+.delayed-trains>div:nth-of-type(2n) {
+    background-color: #eee;
+}
+
+.train-number {
+    font-size: 2rem;
+    font-weight: bold;
+    width: 30%;
+}
+
+.current-station {
+    width: 30%;
 }
