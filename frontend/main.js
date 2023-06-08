@@ -1,4 +1,17 @@
 function renderMainView() {
+    let container = document.getElementById("container");
+
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+
+    container.innerHTML = `<div class="delayed">
+                <h1>Försenade tåg</h1>
+
+                <div id="delayed-trains" class="delayed-trains"></div>
+            </div>
+            <div id="map" class="map"></div>`;
+
     const socket = io("http://localhost:1337");
 
     const map = L.map('map').setView([62.173276, 14.942265], 5);
@@ -65,6 +78,42 @@ function outputDelay(item) {
 }
 
 function renderTicketView(item) {
+    let container = document.getElementById("container");
+
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+
+    container.innerHTML = `<div class="ticket">
+                <a href="" id="back"><- Tillbaka</a>
+                <h1>Nytt ärende #<span id="new-ticket-id"></span></h1>
+                <div id="ticket-information"></div>
+            </div>
+            <div class="old-tickets" id="old-tickets"></div>`;
+
+
+    let backButton = document.getElementById("back");
+
+    backButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        renderMainView();
+    });
+
+    let oldTickets = document.getElementById("old-tickets");
+
+    fetch("http://localhost:1337/tickets")
+        .then((respons) => response.json())
+        .then((result) => {
+            result.data.forEach((ticket) => {
+                let element = document.createElement("div");
+
+                element.innerHTML = `${ticket.id} ${ticket.code}`;
+
+                oldTickets.appendChild(element);
+            });
+        });
+
     console.log(item);
 }
 
