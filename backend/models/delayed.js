@@ -44,8 +44,6 @@ const delayed = {
                     data: result.RESPONSE.RESULT[0].TrainAnnouncement
                 });
             })
-
-
     }
 };
 

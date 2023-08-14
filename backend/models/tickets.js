@@ -1,12 +1,13 @@
+const database = require('../db/database.js');
+
 const tickets = {
-    getTickets: function getTickets(req, res){
+    getTickets: async function getTickets(req, res){
+        var db = await database.openDb();
+
+        var allTickets = await db.all(`SELECT *, ROWID FROM tickets ORDER BY ROWID DESC`);
+
         return res.json({
-            data: [
-                {
-                    id: 1,
-                    code: "BV102",
-                }
-            ]
+            data: allTickets
         });
     }
 };
