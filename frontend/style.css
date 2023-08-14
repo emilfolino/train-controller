@@ -73,3 +73,7 @@ p {
 .current-station {
     width: 30%;
 }
+
+.ticket-container {
+    padding: 2rem;
+}

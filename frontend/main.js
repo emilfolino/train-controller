@@ -84,12 +84,16 @@ function renderTicketView(item) {
         container.removeChild(container.firstChild);
     }
 
-    container.innerHTML = `<div class="ticket">
+    container.innerHTML = `<div class="ticket-container">
+            <div class="ticket">
                 <a href="" id="back"><- Tillbaka</a>
                 <h1>Nytt ärende #<span id="new-ticket-id"></span></h1>
                 <div id="ticket-information"></div>
             </div>
-            <div class="old-tickets" id="old-tickets"></div>`;
+            <div class="old-tickets" id="old-tickets">
+                <h2>Befintliga ärenden</h2>
+            </div>
+        </div>`;
 
 
     let backButton = document.getElementById("back");
@@ -103,7 +107,7 @@ function renderTicketView(item) {
     let oldTickets = document.getElementById("old-tickets");
 
     fetch("http://localhost:1337/tickets")
-        .then((respons) => response.json())
+        .then((response) => response.json())
         .then((result) => {
             result.data.forEach((ticket) => {
                 let element = document.createElement("div");
