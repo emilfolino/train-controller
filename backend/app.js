@@ -7,10 +7,10 @@ const bodyParser = require('body-parser')
 
 const fetchTrainPositions = require('./models/trains.js')
 const delayed = require('./routes/delayed.js');
+const tickets = require('./routes/tickets.js');
 
 const app = express()
 const httpServer = require("http").createServer(app);
-
 
 app.use(cors());
 app.options('*', cors());
@@ -27,10 +27,13 @@ const io = require("socket.io")(httpServer, {
 const port = 1337
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.json({
+      data: 'Hello World!'
+  })
 })
 
 app.use("/delayed", delayed);
+app.use("/tickets", tickets);
 
 httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
