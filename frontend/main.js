@@ -85,10 +85,17 @@ function renderTicketView(item) {
         container.removeChild(container.firstChild);
     }
 
+    var locationString = "";
+    if (item.FromLocation) {
+         locationString = `<h3>Tåg från ${item.FromLocation[0].LocationName} till ${item.ToLocation[0].LocationName}. Just nu i ${item.LocationSignature}.</h3>`;
+    }
+
     container.innerHTML = `<div class="ticket-container">
             <div class="ticket">
                 <a href="" id="back"><- Tillbaka</a>
                 <h1>Nytt ärende #<span id="new-ticket-id"></span></h1>
+                ${locationString}
+                <p><strong>Försenad:</strong> ${outputDelay(item)}</p>
                 <form id="new-ticket-form">
                     <label>Orsakskod</label><br>
                     <select id="reason-code"></select><br><br>
@@ -116,9 +123,23 @@ function renderTicketView(item) {
     newTicketForm.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        console.log(reasonCodeSelect.value);
-        console.log(item);
-        console.log(newTicketId);
+        var newTicket = {
+            code: reasonCodeSelect.value,
+            trainnumber: item.OperationalTrainNumber,
+            traindate: item.EstimatedTimeAtLocation.substring(0, 10),
+        };
+
+        fetch("http://localhost:1337/tickets", {
+            body: JSON.stringify(newTicket),
+            headers: {
+              'content-type': 'application/json'
+            },
+            method: 'POST'
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                renderTicketView(item);
+            });
     });
 
     fetch("http://localhost:1337/tickets")
@@ -135,7 +156,7 @@ function renderTicketView(item) {
             result.data.forEach((ticket) => {
                 let element = document.createElement("div");
 
-                element.innerHTML = `${ticket.id} ${ticket.code}`;
+                element.innerHTML = `${ticket.id} - ${ticket.code} - ${ticket.trainnumber} - ${ticket.traindate}`;
 
                 oldTickets.appendChild(element);
             });

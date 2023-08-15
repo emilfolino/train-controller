@@ -18,6 +18,9 @@ app.options('*', cors());
 
 app.disable('x-powered-by');
 
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 const io = require("socket.io")(httpServer, {
   cors: {
     origin: "http://localhost:9000",
